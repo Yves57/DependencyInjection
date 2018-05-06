@@ -8,6 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
         Dynamic,
         Runtime,
         Expressions,
-        ILEmit
+        ILEmit,
+        Experimental
     }
 }

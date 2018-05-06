@@ -348,10 +348,12 @@ namespace Microsoft.Extensions.DependencyInjection.Specification
         {
             var serviceCollection = new TestServiceCollection()
                 .AddSingleton<CreationCountFakeService>();
-            var serviceProvider = CreateServiceProvider(serviceCollection);
 
             var ex = Assert.Throws<InvalidOperationException>(() =>
-            CreateInstance<CreationCountFakeService>(createFunc, serviceProvider));
+            {
+                var serviceProvider = CreateServiceProvider(serviceCollection);
+                CreateInstance<CreationCountFakeService>(createFunc, serviceProvider);
+            });
             Assert.Equal($"Unable to resolve service for type '{typeof(IFakeService)}' while attempting" +
                 $" to activate '{typeof(CreationCountFakeService)}'.",
                 ex.Message);

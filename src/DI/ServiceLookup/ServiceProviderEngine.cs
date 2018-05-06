@@ -54,9 +54,14 @@ namespace Microsoft.Extensions.DependencyInjection.ServiceLookup
                 ThrowHelper.ThrowObjectDisposedException();
             }
 
-            var realizedService = RealizedServices.GetOrAdd(serviceType, _createServiceAccessor);
+            var realizedService = GetOrCreateRealizedService(serviceType);
             _callback?.OnResolve(serviceType, serviceProviderEngineScope);
             return realizedService.Invoke(serviceProviderEngineScope);
+        }
+
+        protected virtual Func<ServiceProviderEngineScope, object> GetOrCreateRealizedService(Type serviceType)
+        {
+            return RealizedServices.GetOrAdd(serviceType, _createServiceAccessor);
         }
 
         public IServiceScope CreateScope()
@@ -69,7 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection.ServiceLookup
             return new ServiceProviderEngineScope(this);
         }
 
-        private Func<ServiceProviderEngineScope, object> CreateServiceAccessor(Type serviceType)
+        protected Func<ServiceProviderEngineScope, object> CreateServiceAccessor(Type serviceType)
         {
             var callSite = CallSiteFactory.CreateCallSite(serviceType, new CallSiteChain());
             if (callSite != null)

@@ -12,9 +12,10 @@ namespace Microsoft.Extensions.DependencyInjection.ServiceLookup
         public ConstantCallSite(Type serviceType, object defaultValue)
         {
             DefaultValue = defaultValue;
+            ServiceType = serviceType;
         }
 
-        public Type ServiceType => DefaultValue.GetType();
+        public Type ServiceType { get; }
         public Type ImplementationType => DefaultValue.GetType();
         public CallSiteKind Kind { get; } = CallSiteKind.Constant;
     }

@@ -40,6 +40,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 case ServiceProviderMode.Expressions:
                     _engine = new ExpressionsServiceProviderEngine(serviceDescriptors, callback);
                     break;
+                case ServiceProviderMode.Experimental:
+                    _engine = new ExperimentalServiceProviderEngine(serviceDescriptors, callback);
+                    break;
                 default:
                     throw new NotSupportedException(nameof(options.Mode));
             }

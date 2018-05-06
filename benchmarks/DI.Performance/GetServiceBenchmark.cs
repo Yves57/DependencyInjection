@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection.Performance
         private IServiceProvider _emptyEnumerable;
         private ServiceProviderMode _mode;
 
-        [Params("Expressions", "Dynamic", "Runtime", "ILEmit")]
+        [Params("Expressions", "Dynamic", "Runtime", "ILEmit", "Experimental")]
         public string Mode {
             set {
                 _mode = (ServiceProviderMode)Enum.Parse(typeof(ServiceProviderMode), value);

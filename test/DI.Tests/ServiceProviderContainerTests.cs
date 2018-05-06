@@ -39,10 +39,13 @@ namespace Microsoft.Extensions.DependencyInjection.Tests
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<ClassWithPrivateCtor>();
             serviceCollection.AddTransient<ClassDependsOnPrivateConstructorClass>();
-            var serviceProvider = CreateServiceProvider(serviceCollection);
 
             // Act and Assert
-            var ex = Assert.Throws<InvalidOperationException>(() => serviceProvider.GetServices<ClassDependsOnPrivateConstructorClass>());
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+            {
+                var serviceProvider = CreateServiceProvider(serviceCollection);
+                serviceProvider.GetServices<ClassDependsOnPrivateConstructorClass>();
+            });
             Assert.Equal(expectedMessage, ex.Message);
         }
 
@@ -52,10 +55,13 @@ namespace Microsoft.Extensions.DependencyInjection.Tests
             // Arrange
             var collection = new ServiceCollection();
             collection.AddTransient<DependOnNonexistentService>();
-            var provider = CreateServiceProvider(collection);
 
             // Act and Assert
-            var ex = Assert.Throws<InvalidOperationException>(() => provider.GetService<DependOnNonexistentService>());
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+            {
+                var provider = CreateServiceProvider(collection);
+                provider.GetService<DependOnNonexistentService>();
+            });
             Assert.Equal($"Unable to resolve service for type '{typeof(IFakeService)}' while attempting to activate " +
                 $"'{typeof(DependOnNonexistentService)}'.", ex.Message);
         }
@@ -66,11 +72,13 @@ namespace Microsoft.Extensions.DependencyInjection.Tests
             // Arrange
             var collection = new ServiceCollection();
             collection.AddTransient<DependOnNonexistentService>();
-            var provider = CreateServiceProvider(collection);
 
             // Act and Assert
             var ex = Assert.Throws<InvalidOperationException>(() =>
-                provider.GetService<IEnumerable<DependOnNonexistentService>>());
+            {
+                var provider = CreateServiceProvider(collection);
+                provider.GetService<IEnumerable<DependOnNonexistentService>>();
+            });
             Assert.Equal($"Unable to resolve service for type '{typeof(IFakeService)}' while attempting to activate " +
                 $"'{typeof(DependOnNonexistentService)}'.", ex.Message);
         }
